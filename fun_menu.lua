@@ -299,13 +299,13 @@ end
 
 if readlangfile() == "Unknown" then
 	if lang.get_current() == "fr" then
-		writelangfile("French - français")
+		writelangfile("French - franÃ§ais")
 	else
 		writelangfile("English")
 	end
 end
 
-if readlangfile() == "French - français" then
+if readlangfile() == "French - franÃ§ais" then
 	loadlangfile(frlang, "French")
 	actuallang = "French"
 else
@@ -359,7 +359,7 @@ local settingmenu = menu.list(menu.my_root(), SETTING_MENU, {}, "")
 local langmenu = menu.list(settingmenu, LANG_MENU..actuallang, {}, "")
 
 chooselang_fr = menu.action(langmenu, "French - Francais", {}, "", function()
-	warning(chooselang_fr, "French - français")
+	warning(chooselang_fr, "French - franÃ§ais")
 end)
 chooselang_en = menu.action(langmenu, "English", {}, "", function()
 	warning(chooselang_en, "English")
