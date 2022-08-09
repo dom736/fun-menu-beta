@@ -11,11 +11,11 @@ end)
 objectmanager = off
 toggleobjmanager = menu.toggle(entitymanagerlist, ACTIVATE_OBJECT_MANAGER, {"objmanager"}, "", function(on)
 	if not objectmanager then
+		menu.trigger_commands("objmanager off")
 		menu.show_warning(toggleobjmanager, CLICK_MENU, OBJECT_WARN, function() 
 			objectmanager = true
 			menu.trigger_commands("objmanager on")
 		end)
-		menu.trigger_commands("objmanager off")
 	else
 		objectmanager = on
 	end

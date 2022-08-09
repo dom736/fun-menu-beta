@@ -1,8 +1,13 @@
-local vehmenu = menu.list(menu.my_root(), VEHICULE_MENU, {}, "")
-local vehflymenu = menu.list(vehmenu, VEH_FLY_SUBMENU, {}, "")
-local vehspeedmettermenu = menu.list(vehmenu, SPEED_METTER, {}, "")
-local vehspeedmettersettingmenu = menu.list(vehspeedmettermenu, SPEED_METTER_SETTING, {}, "")
-local vehspeedmettertexturemenu = menu.list(vehspeedmettermenu, SPEED_METTER_TEXTURE, {}, "")
+vehmenu = menu.list(menu.my_root(), VEHICULE_MENU, {}, "")
+vehflymenu = menu.list(vehmenu, VEH_FLY_SUBMENU, {}, "")
+vehspeedmettermenu = menu.list(vehmenu, SPEED_METTER, {}, "")
+vehspeedmettersettingmenu = menu.list(vehspeedmettermenu, SPEED_METTER_SETTING, {}, "")
+vehspeedmettertexturemenu = menu.list(vehspeedmettermenu, SPEED_METTER_TEXTURE, {}, "")
+
+successiadrive = pcall(require, iadrive)
+if not successiadrive then
+	util.toast(FAIL_LOAD1.."ia drive"..FAIL_LOAD2)
+end
 
 vehflystop = off
 menu.toggle(vehflymenu, VEH_FLY_STOP, {}, "", function(on)

@@ -20,6 +20,7 @@ menu.divider(menu.my_root(), 'Fun menu' )
 	onlineplayerlib = "store.funmenu.lib.onlineplayer"
 	selflib = "store.funmenu.lib.self"
 	vehiclelib = "store.funmenu.lib.vehicle"
+	iadrive = "store.funmenu.lib.iadrive"
 	weaponlib = "store.funmenu.lib.weapon"
 	audiolib = "store.funmenu.lib.audio"
 	misclib = "store.funmenu.lib.misc"
@@ -265,6 +266,10 @@ function getgamerhandle(pid)
 	ptr = memory.alloc_int()
 	NETWORK.NETWORK_HANDLE_FROM_PLAYER(PLAYER.PLAYER_ID(), ptr, 13)
 	return ptr
+end
+function cleartaskinveh()
+	TASK.CLEAR_PED_TASKS_IMMEDIATELY(plyped())
+	PED.SET_PED_INTO_VEHICLE(plyped(), vehlast, -1)
 end
 
 function readlangfile()					--credit for lang changing code goes to IceDoomfist hope he don't mind
