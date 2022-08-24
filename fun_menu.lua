@@ -2,6 +2,52 @@ loadtimestart = util.current_time_millis()
 util.keep_running()
 util.require_natives(1651208000)
 
+veh = 0
+
+menu.divider(menu.my_root(), 'Fun menu' )
+
+--------------directory--------------
+	funmenudir = filesystem.store_dir().."funmenu\\"
+	funmenulangdir = funmenudir.."lang\\"
+	phonebgdir = funmenudir.."Phone BG Image//"
+	settingdir = funmenudir.."funmenuconfig.ini"
+	updatefile = funmenudir.."update.lua"
+	updatefile2 = funmenudir.."update2.lua"
+	speedmeterneedle = funmenudir.."Needledefault.dds"
+	speedmeterradiant = funmenudir.."Speedometerdefault.dds"
+	speedmeterrpmraddiant = funmenudir.."RPM.dds"
+	speedmeterneedlecherax = funmenudir.."Needlecherax.dds"
+	speedmeterradiantcherax = funmenudir.."Speedometercherax.dds"
+	speedmeterrrpmcherax = funmenudir.."RPMcherax.dds"
+	onlineplayerlib = "store.funmenu.lib.onlineplayer"
+	selflib = "store.funmenu.lib.self"
+	vehiclelib = "store.funmenu.lib.vehicle"
+	iadrive = "store.funmenu.lib.iadrive"
+	weaponlib = "store.funmenu.lib.weapon"
+	audiolib = "store.funmenu.lib.audio"
+	misclib = "store.funmenu.lib.misc"
+	entmanalib = "store.funmenu.lib.entity manager"
+	esplib = "store.funmenu.lib.espsettings"
+	gtascriptmonitorlib = "store.funmenu.lib.gtascriptmonitor"
+	updatefilerequire = "store.funmenu.update"
+	updatefilerequire2 = "store.funmenu.update2"
+
+	local enlang = funmenulangdir.."Englishtrad.lua"
+	local frlang = funmenulangdir.."Frenchtrad.lua"
+
+	if not filesystem.exists(funmenudir) then
+            filesystem.mkdir(funmenudir)
+    end
+	if not filesystem.exists(funmenulangdir) then
+            filesystem.mkdir(funmenulangdir)
+    end
+	if not filesystem.exists(settingdir) then
+                local open = io.open(settingdir, "w+")
+                open:write("Unknown")
+                open:close()
+    end
+--------------directory end--------------
+
 scriptversion = 0101
 	checkverhttp = false
 	async_http.init("api.github.com", "/repos/dom736/fun-menu-beta/releases/latest", function(output)
@@ -154,47 +200,6 @@ scriptversion = 0101
 			util.yield()
 	end
 
-veh = 0
-
-menu.divider(menu.my_root(), 'Fun menu' )
-
---------------directory--------------
-	funmenudir = filesystem.store_dir().."funmenu\\"
-	funmenulangdir = funmenudir.."lang\\"
-	phonebgdir = funmenudir.."Phone BG Image//"
-	settingdir = funmenudir.."funmenuconfig.ini"
-	speedmeterneedle = funmenudir.."Needledefault.dds"
-	speedmeterradiant = funmenudir.."Speedometerdefault.dds"
-	speedmeterrpmraddiant = funmenudir.."RPM.dds"
-	speedmeterneedlecherax = funmenudir.."Needlecherax.dds"
-	speedmeterradiantcherax = funmenudir.."Speedometercherax.dds"
-	speedmeterrrpmcherax = funmenudir.."RPMcherax.dds"
-	onlineplayerlib = "store.funmenu.lib.onlineplayer"
-	selflib = "store.funmenu.lib.self"
-	vehiclelib = "store.funmenu.lib.vehicle"
-	iadrive = "store.funmenu.lib.iadrive"
-	weaponlib = "store.funmenu.lib.weapon"
-	audiolib = "store.funmenu.lib.audio"
-	misclib = "store.funmenu.lib.misc"
-	entmanalib = "store.funmenu.lib.entity manager"
-	esplib = "store.funmenu.lib.espsettings"
-	gtascriptmonitorlib = "store.funmenu.lib.gtascriptmonitor"
-
-	local enlang = funmenulangdir.."Englishtrad.lua"
-	local frlang = funmenulangdir.."Frenchtrad.lua"
-
-	if not filesystem.exists(funmenudir) then
-            filesystem.mkdir(funmenudir)
-    end
-	if not filesystem.exists(funmenulangdir) then
-            filesystem.mkdir(funmenulangdir)
-    end
-	if not filesystem.exists(settingdir) then
-                local open = io.open(settingdir, "w+")
-                open:write("Unknown")
-                open:close()
-    end
---------------directory end--------------
 xscreensize, yscreensize = directx.get_client_size()
 function requestControlLoop(entity)
 	local tick = 0
