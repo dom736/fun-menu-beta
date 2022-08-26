@@ -259,3 +259,15 @@ DEAD_ESP = "Dead"
 GTA_MONITOR_FAIL = "GTA script monitor"
 GTA_MONITOR = "Monitor GTA Script"
 --------------gta script monitor end--------------
+SEE_CHANGE = "See changelog"
+CHANGE_LOG = [[-Improved auto updater
+-tried to fix my stupidity
+-added missing translation]]
+UPDATE_LUA = "Update the lua"
+NEW_VER_AVAILABLE = "A new version is available to update the lua go to : Stand > Lua Script > "..SETTING_MENU.." > "..UPDATE_LUA
+FINISHED_UPDATE = "Finished updating please restart the lua to have the updated version"
+RATE_LIMIT = "Can't download the latest version you are being rate limited"
+STATUS_RATE_LIMIT = "Checking ratelimit"
+STATUS_FETCHING = "Fetching file..."
+STATUS_FETCHING_FOUND = "found : "
+STATUS_DOWNLOADING= "Downloading : "
