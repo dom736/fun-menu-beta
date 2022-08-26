@@ -48,157 +48,176 @@ menu.divider(menu.my_root(), 'Fun menu' )
     end
 --------------directory end--------------
 
-scriptversion = 0101
+	scriptversion = 0103
 	checkverhttp = false
-	async_http.init("api.github.com", "/repos/dom736/fun-menu-beta/releases/latest", function(output)
-		veroutput = string.gsub(string.match(string.match(output, "v%d.%d.%d.%d"), "%d.%d.%d.%d"), "%.", "")
-		if (tonumber(veroutput)>scriptversion) then
-		ratelimit = ""
-		finishedhttp = false
-		async_http.init("api.github.com", "/rate_limit", function(output)
-			ratelimit = string.gsub(string.gsub(string.match(output, '"remaining":%d.'), '"remaining":', ""), ",", "")
-			finishedhttp = true
-		end)
-		async_http.dispatch()
-		while not finishedhttp do
-			util.yield()
-		end
-		if (tonumber(ratelimit)>2) then
-			basepath = "/repos/dom736/fun-menu-beta/contents"
-			finishedhttp = false
-			async_http.init("api.github.com", basepath, function(output)
-				f = io.open(updatefile, "w+")
-				f:write(string.gsub(string.gsub(string.gsub(string.gsub(string.gsub(string.gsub(string.gsub(string.gsub(string.gsub(string.gsub(string.gsub(string.gsub(string.gsub(string.gsub(string.gsub(string.gsub(string.gsub(string.gsub(output, ",", ","..string.char(10)..""), "%[", "httpreponse = {"), "%]", ", "..string.char(10).."{stupid = "), ":", "="), "null", "nil"), '"html_url"', "htlm_url"), '"url"', "url"), '"name"', "name"), '"sha"', "sha"), '"path"', "path"), '"size"', "size"), '"git_url"', "git_url"), '"download_url"', "download_url"), '"type"', "type"), '"_links"', "_links"), '"git"', "git"), '"html"', "html"), '"self"', "self"))
-				f:close()
-				finishedhttp = true
-			end)
-			async_http.dispatch()
-			while not finishedhttp do
-				util.yield()
-			end
-			finishedhttp = false
-			async_http.init("api.github.com", basepath.."/store/funmenu", function(output)
-				f = io.open(updatefile, "a+")
-				f:write(string.gsub(string.gsub(string.gsub(string.gsub(string.gsub(string.gsub(string.gsub(string.gsub(string.gsub(string.gsub(string.gsub(string.gsub(string.gsub(string.gsub(string.gsub(string.gsub(string.gsub(string.gsub(output, ",", ","..string.char(10)..""), "%[%{", ","), "%]", "} stupid = "), ":", "="), "null", "nil"), '"html_url"', "htlm_url"), '"url"', "url"), '"name"', "name"), '"sha"', "sha"), '"path"', "path"), '"size"', "size"), '"git_url"', "git_url"), '"download_url"', "download_url"), '"type"', "type"), '"_links"', "_links"), '"git"', "git"), '"html"', "html"), '"self"', "self"))
-				f:close()
-				finishedhttp = true
-			end)
-			async_http.dispatch()
-			while not finishedhttp do
-				util.yield()
-			end
-			require(updatefilerequire)
-			filedetected = {}
-			filepath = {}
-			folderpath = {}
-			foldpos = 0
-			filepos = 0
-			for i , v in ipairs(httpreponse) do
-				if not (v.name == "README.md") and not (string.find(v.name, "%p") == nil) then
-					filepos = filepos+1
-					filedetected[filepos] = v.name			
-					filepath[filepos] = v.path
+	async_http.init("api.github.com", "/rate_limit", function(output)
+		ratelimit = string.gsub(string.gsub(string.match(output, '"remaining":%d.'), '"remaining":', ""), ",", "")
+		finishedhttp = true
+	end)
+	async_http.dispatch()
+	while not finishedhttp do
+		util.yield()
+	end
+	if (tonumber(ratelimit)>5) then
+		async_http.init("api.github.com", "/repos/dom736/fun-menu-beta/releases/latest", function(output)
+			veroutput = string.gsub(string.match(string.match(output, "v%d.%d.%d.%d"), "%d.%d.%d.%d"), "%.", "")
+			if (tonumber(veroutput)>scriptversion) then
+			util.toast(NEW_VER_AVAILABLE)
+			menu.action(settingmenu, UPDATE_LUA , {}, "", function()
+			isupdating = true
+			basemess = ""
+			endmess = ""
+			util.create_tick_handler(function()
+				directx.draw_text(0.5, 0.5, basemess..endmess, 5, 0.75, {r = 255, g = 255, b =255, a= 255}, true)
+				if not isupdating and succes then
+					util.toast(FINISHED_UPDATE)
 				end
-				if not (v.name == "README.md") and (string.find(v.name, "%p") == nil) and (string.find(v.name, "store") == nil) then
-					foldpos = foldpos+1
-					folderpath[foldpos] = v.path
-				end
-			end
-			os.remove(updatefile)
-			f = io.open(updatefile2, "w+")
-			f:write("httpreponse2 = {")
-			f:close()
-			for i , v in ipairs(folderpath) do
+				return isupdating
+			end)
+				ratelimit = ""
 				finishedhttp = false
-					async_http.init("api.github.com", basepath..v, function(output)
-					f = io.open(updatefile2, "a+")
-					f:write(string.gsub(string.gsub(string.gsub(string.gsub(string.gsub(string.gsub(string.gsub(string.gsub(string.gsub(string.gsub(string.gsub(string.gsub(string.gsub(string.gsub(string.gsub(string.gsub(string.gsub(string.gsub(output, ",", ","..string.char(10)..""), "%[", ""), "%]", ", "..string.char(10).."--[[ "), ":", "="), "null", "nil"), '"html_url"', "htlm_url"), '"url"', "url"), '"name"', "name"), '"sha"', "sha"), '"path"', "path"), '"size"', "size"), '"git_url"', "git_url"), '"download_url"', "download_url"), '"type"', "type"), '"_links"', "_links"), '"git"', "git"), '"html"', "html"), '"self"', "self"))
-					if not (foldpos == i) then
-						f:write("]]")
-					else
-						f:write("]]"..[[ {name= "README.md",
-						path= "README.md",
-						sha= "922e1614d439dc693160194620a63956e9dad66b",
-						size= 68,
-						url= "https=//api.github.com/repos/dom736/fun-menu-beta/contents/README.md?ref=main",
-						html_url= "https=//github.com/dom736/fun-menu-beta/blob/main/README.md",
-						git_url= "https=//api.github.com/repos/dom736/fun-menu-beta/git/blobs/922e1614d439dc693160194620a63956e9dad66b",
-						download_url= "https=//raw.githubusercontent.com/dom736/fun-menu-beta/main/README.md",
-						type= "file",
-						_link= {
-						  self= "https=//api.github.com/repos/dom736/fun-menu-beta/contents/README.md?ref=main",
-						  git= "https=//api.github.com/repos/dom736/fun-menu-beta/git/blobs/922e1614d439dc693160194620a63956e9dad66b",
-						  html= "https=//github.com/dom736/fun-menu-beta/blob/main/README.md"
-						}
-					  }
-					  }]])
-					end
-					f:close()
-				finishedhttp = true
+				basemess = STATUS_RATE_LIMIT
+				async_http.init("api.github.com", "/rate_limit", function(output)
+					ratelimit = string.gsub(string.gsub(string.match(output, '"remaining":%d.'), '"remaining":', ""), ",", "")
+					finishedhttp = true
 				end)
 				async_http.dispatch()
 				while not finishedhttp do
 					util.yield()
 				end
-			end
-			require(updatefilerequire2)
-			for i , v in ipairs(httpreponse2) do
-				if not (v.name == "README.md") and not (string.find(v.name, "%p") == nil) then
-					filepos = filepos+1
-					filedetected[filepos] = v.name
-					filepath[filepos] = v.path			
-				end
-				if not (v.name == "README.md") and (string.find(v.name, "%p") == nil) and (string.find(v.name, "store") == nil) then
-					foldpos = foldpos+1
-					folderpath[foldpos] = v.path
-				end
-			end
-			ratelimit = ""
-			finishedhttp = false
-			async_http.init("api.github.com", "/rate_limit", function(output)
-				ratelimit = string.gsub(string.gsub(string.match(output, '"remaining":%d.'), '"remaining":', ""), ",", "")
-				finishedhttp = true
-			end)
-			async_http.dispatch()
-			while not finishedhttp do
-				util.yield()
-			end
-			if (tonumber(ratelimit)>10) then
-				for i, filetodownload in ipairs(filedetected) do
-					finishedhttp = false
-					async_http.init("raw.githubusercontent.com", "/dom736/fun-menu-beta/main/"..filepath[i], function(output)
-						if not (string.find(filetodownload, ".dds") == nil) or not (string.find(filetodownload, ".ytd") == nil) then
-							writemode = "wb"
-						else
-							writemode = "w+"
+				if (tonumber(ratelimit)>4) then
+						basemess = STATUS_FETCHING
+						basepath = "/repos/dom736/fun-menu-beta/contents"
+						finishedhttp = false
+						async_http.init("api.github.com", basepath, function(output)
+							f = io.open(updatefile, "w+")
+							f:write(string.gsub(string.gsub(string.gsub(string.gsub(string.gsub(string.gsub(string.gsub(string.gsub(string.gsub(string.gsub(string.gsub(string.gsub(string.gsub(string.gsub(string.gsub(string.gsub(string.gsub(string.gsub(output, ",", ","..string.char(10)..""), "%[", "httpreponse = {"), "%]", ", "..string.char(10).."{stupid = "), ":", "="), "null", "nil"), '"html_url"', "htlm_url"), '"url"', "url"), '"name"', "name"), '"sha"', "sha"), '"path"', "path"), '"size"', "size"), '"git_url"', "git_url"), '"download_url"', "download_url"), '"type"', "type"), '"_links"', "_links"), '"git"', "git"), '"html"', "html"), '"self"', "self"))
+							f:close()
+							finishedhttp = true
+						end)
+						async_http.dispatch()
+						while not finishedhttp do
+							util.yield()
 						end
-						file = io.open(filesystem.scripts_dir()..filepath[i], writemode)
-						file:write(output)
-						file:close()
-						directx.draw_text(0.5, 0.5, "downloading "..filetodownload, 5, 1, {r = 255, g = 255, b =255, a= 255}, true)
-						util.yield(200)
-					end)
-					async_http.dispatch()
-					finishedhttp = true
-					while not finishedhttp do
-					
-						util.yield()
+						finishedhttp = false
+						async_http.init("api.github.com", basepath.."/store/funmenu", function(output)
+							f = io.open(updatefile, "a+")
+							f:write(string.gsub(string.gsub(string.gsub(string.gsub(string.gsub(string.gsub(string.gsub(string.gsub(string.gsub(string.gsub(string.gsub(string.gsub(string.gsub(string.gsub(string.gsub(string.gsub(string.gsub(string.gsub(output, ",", ","..string.char(10)..""), "%[%{", ","), "%]", "} stupid = "), ":", "="), "null", "nil"), '"html_url"', "htlm_url"), '"url"', "url"), '"name"', "name"), '"sha"', "sha"), '"path"', "path"), '"size"', "size"), '"git_url"', "git_url"), '"download_url"', "download_url"), '"type"', "type"), '"_links"', "_links"), '"git"', "git"), '"html"', "html"), '"self"', "self"))
+							f:close()
+							finishedhttp = true
+						end)
+						async_http.dispatch()
+						while not finishedhttp do
+							util.yield()
+						end
+						require(updatefilerequire)
+						filedetected = {}
+						filepath = {}
+						folderpath = {}
+						foldpos = 0
+						filepos = 0
+						for i , v in ipairs(httpreponse) do
+							if not (v.name == "README.md") and not (v.name == "funmenuconfig.ini") and not (string.find(v.name, "%p") == nil) then
+								filepos = filepos+1
+								filedetected[filepos] = v.name
+								endmess = STATUS_FETCHING_FOUND..v.name
+								filepath[filepos] = v.path
+							end
+							if not (v.name == "README.md") and not (v.name == "funmenuconfig.ini") and (string.find(v.name, "%p") == nil) and (string.find(v.name, "store") == nil) then
+								foldpos = foldpos+1
+								folderpath[foldpos] = v.path
+							end
+							util.yield(100)
+						end
+						f = io.open(updatefile2, "w+")
+						f:write("httpreponse2 = {")
+						f:close()
+						for i , v in ipairs(folderpath) do
+							finishedhttp = false
+								async_http.init("api.github.com", basepath..v, function(output)
+								f = io.open(updatefile2, "a+")
+								f:write(string.gsub(string.gsub(string.gsub(string.gsub(string.gsub(string.gsub(string.gsub(string.gsub(string.gsub(string.gsub(string.gsub(string.gsub(string.gsub(string.gsub(string.gsub(string.gsub(string.gsub(string.gsub(output, ",", ","..string.char(10)..""), "%[", ""), "%]", ", "..string.char(10).."--[[ "), ":", "="), "null", "nil"), '"html_url"', "htlm_url"), '"url"', "url"), '"name"', "name"), '"sha"', "sha"), '"path"', "path"), '"size"', "size"), '"git_url"', "git_url"), '"download_url"', "download_url"), '"type"', "type"), '"_links"', "_links"), '"git"', "git"), '"html"', "html"), '"self"', "self"))
+								if not (foldpos == i) then
+									f:write("]]")
+								else
+									f:write("]]"..[[ {name= "README.md",
+									path= "README.md",
+									sha= "922e1614d439dc693160194620a63956e9dad66b",
+									size= 68,
+									url= "https=//api.github.com/repos/dom736/fun-menu-beta/contents/README.md?ref=main",
+									html_url= "https=//github.com/dom736/fun-menu-beta/blob/main/README.md",
+									git_url= "https=//api.github.com/repos/dom736/fun-menu-beta/git/blobs/922e1614d439dc693160194620a63956e9dad66b",
+									download_url= "https=//raw.githubusercontent.com/dom736/fun-menu-beta/main/README.md",
+									type= "file",
+									_link= {
+									  self= "https=//api.github.com/repos/dom736/fun-menu-beta/contents/README.md?ref=main",
+									  git= "https=//api.github.com/repos/dom736/fun-menu-beta/git/blobs/922e1614d439dc693160194620a63956e9dad66b",
+									  html= "https=//github.com/dom736/fun-menu-beta/blob/main/README.md"
+									}
+								  }
+								  }]])
+								end
+								f:close()
+							finishedhttp = true
+							end)
+							async_http.dispatch()
+							while not finishedhttp do
+								util.yield()
+							end
+						end
+						require(updatefilerequire2)
+						for i , v in ipairs(httpreponse2) do
+							if not (v.name == "README.md") and not (string.find(v.name, "%p") == nil) then
+								filepos = filepos+1
+								filedetected[filepos] = v.name
+								endmess = STATUS_FETCHING_FOUND..v.name
+								filepath[filepos] = v.path			
+							end
+							if not (v.name == "README.md") and (string.find(v.name, "%p") == nil) and (string.find(v.name, "store") == nil) then
+								foldpos = foldpos+1
+								folderpath[foldpos] = v.path
+							end
+							util.yield(100)
+						end
+						ratelimit = ""
+						finishedhttp = false
+						basemess = STATUS_DOWNLOADING
+						for i, filetodownload in ipairs(filedetected) do
+							endmess = filetodownload
+							finishedhttp = false
+							async_http.init("raw.githubusercontent.com", "/dom736/fun-menu-beta/main/"..filepath[i], function(output)
+								if not (string.find(filetodownload, ".dds") == nil) or not (string.find(filetodownload, ".ytd") == nil) then
+									writemode = "wb"
+								else
+									writemode = "w+"
+								end
+								file = io.open(filesystem.scripts_dir()..filepath[i], writemode)
+								file:write(output)
+								file:close()
+							end)
+							async_http.dispatch()
+							finishedhttp = true
+							while not finishedhttp do
+								util.yield()
+							end
+							util.yield(500)
+						end
+					else
+						util.toast(RATE_LIMIT)
+						updating = false
+						succes = false
+						util.yield(100)
 					end
-				end
-			else
-				util.toast("Can't download the newest version you are being rate limited")
+					updating = false
+					succes = true
+					os.remove(updatefile2)
+					os.remove(updatefile)
+				end)
 			end
-			os.remove(updatefile2)
-			else
-				util.toast("Can't fetch file you are being rate limited")
-			end
-		end
-		checkverhttp = true
-	end)
-	async_http.dispatch()
-	while not checkverhttp do
-			util.yield()
+			checkverhttp = true
+		end)
 	end
+	async_http.dispatch()
 
 xscreensize, yscreensize = directx.get_client_size()
 function requestControlLoop(entity)
@@ -535,7 +554,178 @@ require(onlineplayerlib)
 loadingtimeend = util.current_time_millis()
 util.show_corner_help(WELCOM_MESS.. loadingtimeend-loadtimestart ..WELCOM_MESS_2)
 
-
+checkverhttp = false
+function checkver()
+	scriptversion = 0103
+	async_http.init("api.github.com", "/rate_limit", function(output)
+		ratelimit = string.gsub(string.gsub(string.match(output, '"remaining":%d.'), '"remaining":', ""), ",", "")
+		finishedhttp = true
+	end)
+	async_http.dispatch()
+	while not finishedhttp do
+		util.yield()
+	end
+	if (tonumber(ratelimit)>5) then
+		async_http.init("api.github.com", "/repos/dom736/fun-menu-beta/releases/latest", function(output)
+			veroutput = string.gsub(string.match(string.match(output, "v%d.%d.%d.%d"), "%d.%d.%d.%d"), "%.", "")
+			if (tonumber(veroutput)>scriptversion) then
+			util.toast(NEW_VER_AVAILABLE)
+			menu.action(settingmenu, UPDATE_LUA , {}, "", function()
+			isupdating = true
+			basemess = ""
+			endmess = ""
+			util.create_tick_handler(function()
+				directx.draw_text(0.5, 0.5, basemess..endmess, 5, 0.75, {r = 255, g = 255, b =255, a= 255}, true)
+				if not isupdating and succes then
+					util.toast(FINISHED_UPDATE)
+				end
+				return isupdating
+			end)
+				ratelimit = ""
+				finishedhttp = false
+				basemess = STATUS_RATE_LIMIT
+				async_http.init("api.github.com", "/rate_limit", function(output)
+					ratelimit = string.gsub(string.gsub(string.match(output, '"remaining":%d.'), '"remaining":', ""), ",", "")
+					finishedhttp = true
+				end)
+				async_http.dispatch()
+				while not finishedhttp do
+					util.yield()
+				end
+				if (tonumber(ratelimit)>4) then
+						basemess = STATUS_FETCHING
+						basepath = "/repos/dom736/fun-menu-beta/contents"
+						finishedhttp = false
+						async_http.init("api.github.com", basepath, function(output)
+							f = io.open(updatefile, "w+")
+							f:write(string.gsub(string.gsub(string.gsub(string.gsub(string.gsub(string.gsub(string.gsub(string.gsub(string.gsub(string.gsub(string.gsub(string.gsub(string.gsub(string.gsub(string.gsub(string.gsub(string.gsub(string.gsub(output, ",", ","..string.char(10)..""), "%[", "httpreponse = {"), "%]", ", "..string.char(10).."{stupid = "), ":", "="), "null", "nil"), '"html_url"', "htlm_url"), '"url"', "url"), '"name"', "name"), '"sha"', "sha"), '"path"', "path"), '"size"', "size"), '"git_url"', "git_url"), '"download_url"', "download_url"), '"type"', "type"), '"_links"', "_links"), '"git"', "git"), '"html"', "html"), '"self"', "self"))
+							f:close()
+							finishedhttp = true
+						end)
+						async_http.dispatch()
+						while not finishedhttp do
+							util.yield()
+						end
+						finishedhttp = false
+						async_http.init("api.github.com", basepath.."/store/funmenu", function(output)
+							f = io.open(updatefile, "a+")
+							f:write(string.gsub(string.gsub(string.gsub(string.gsub(string.gsub(string.gsub(string.gsub(string.gsub(string.gsub(string.gsub(string.gsub(string.gsub(string.gsub(string.gsub(string.gsub(string.gsub(string.gsub(string.gsub(output, ",", ","..string.char(10)..""), "%[%{", ","), "%]", "} stupid = "), ":", "="), "null", "nil"), '"html_url"', "htlm_url"), '"url"', "url"), '"name"', "name"), '"sha"', "sha"), '"path"', "path"), '"size"', "size"), '"git_url"', "git_url"), '"download_url"', "download_url"), '"type"', "type"), '"_links"', "_links"), '"git"', "git"), '"html"', "html"), '"self"', "self"))
+							f:close()
+							finishedhttp = true
+						end)
+						async_http.dispatch()
+						while not finishedhttp do
+							util.yield()
+						end
+						require(updatefilerequire)
+						filedetected = {}
+						filepath = {}
+						folderpath = {}
+						foldpos = 0
+						filepos = 0
+						for i , v in ipairs(httpreponse) do
+							if not (v.name == "README.md") and not (v.name == "funmenuconfig.ini") and not (string.find(v.name, "%p") == nil) then
+								filepos = filepos+1
+								filedetected[filepos] = v.name
+								endmess = STATUS_FETCHING_FOUND..v.name
+								filepath[filepos] = v.path
+							end
+							if not (v.name == "README.md") and not (v.name == "funmenuconfig.ini") and (string.find(v.name, "%p") == nil) and (string.find(v.name, "store") == nil) then
+								foldpos = foldpos+1
+								folderpath[foldpos] = v.path
+							end
+							util.yield(100)
+						end
+						f = io.open(updatefile2, "w+")
+						f:write("httpreponse2 = {")
+						f:close()
+						for i , v in ipairs(folderpath) do
+							finishedhttp = false
+								async_http.init("api.github.com", basepath..v, function(output)
+								f = io.open(updatefile2, "a+")
+								f:write(string.gsub(string.gsub(string.gsub(string.gsub(string.gsub(string.gsub(string.gsub(string.gsub(string.gsub(string.gsub(string.gsub(string.gsub(string.gsub(string.gsub(string.gsub(string.gsub(string.gsub(string.gsub(output, ",", ","..string.char(10)..""), "%[", ""), "%]", ", "..string.char(10).."--[[ "), ":", "="), "null", "nil"), '"html_url"', "htlm_url"), '"url"', "url"), '"name"', "name"), '"sha"', "sha"), '"path"', "path"), '"size"', "size"), '"git_url"', "git_url"), '"download_url"', "download_url"), '"type"', "type"), '"_links"', "_links"), '"git"', "git"), '"html"', "html"), '"self"', "self"))
+								if not (foldpos == i) then
+									f:write("]]")
+								else
+									f:write("]]"..[[ {name= "README.md",
+									path= "README.md",
+									sha= "922e1614d439dc693160194620a63956e9dad66b",
+									size= 68,
+									url= "https=//api.github.com/repos/dom736/fun-menu-beta/contents/README.md?ref=main",
+									html_url= "https=//github.com/dom736/fun-menu-beta/blob/main/README.md",
+									git_url= "https=//api.github.com/repos/dom736/fun-menu-beta/git/blobs/922e1614d439dc693160194620a63956e9dad66b",
+									download_url= "https=//raw.githubusercontent.com/dom736/fun-menu-beta/main/README.md",
+									type= "file",
+									_link= {
+									  self= "https=//api.github.com/repos/dom736/fun-menu-beta/contents/README.md?ref=main",
+									  git= "https=//api.github.com/repos/dom736/fun-menu-beta/git/blobs/922e1614d439dc693160194620a63956e9dad66b",
+									  html= "https=//github.com/dom736/fun-menu-beta/blob/main/README.md"
+									}
+								  }
+								  }]])
+								end
+								f:close()
+							finishedhttp = true
+							end)
+							async_http.dispatch()
+							while not finishedhttp do
+								util.yield()
+							end
+						end
+						require(updatefilerequire2)
+						for i , v in ipairs(httpreponse2) do
+							if not (v.name == "README.md") and not (string.find(v.name, "%p") == nil) then
+								filepos = filepos+1
+								filedetected[filepos] = v.name
+								endmess = STATUS_FETCHING_FOUND..v.name
+								filepath[filepos] = v.path			
+							end
+							if not (v.name == "README.md") and (string.find(v.name, "%p") == nil) and (string.find(v.name, "store") == nil) then
+								foldpos = foldpos+1
+								folderpath[foldpos] = v.path
+							end
+							util.yield(100)
+						end
+						ratelimit = ""
+						finishedhttp = false
+						basemess = STATUS_DOWNLOADING
+						for i, filetodownload in ipairs(filedetected) do
+							endmess = filetodownload
+							finishedhttp = false
+							async_http.init("raw.githubusercontent.com", "/dom736/fun-menu-beta/main/"..filepath[i], function(output)
+								if not (string.find(filetodownload, ".dds") == nil) or not (string.find(filetodownload, ".ytd") == nil) then
+									writemode = "wb"
+								else
+									writemode = "w+"
+								end
+								file = io.open(filesystem.scripts_dir()..filepath[i], writemode)
+								file:write(output)
+								file:close()
+							end)
+							async_http.dispatch()
+							finishedhttp = true
+							while not finishedhttp do
+								util.yield()
+							end
+							util.yield(500)
+						end
+					else
+						util.toast(RATE_LIMIT)
+						updating = false
+						succes = false
+						util.yield(100)
+					end
+					updating = false
+					succes = true
+					os.remove(updatefile2)
+					os.remove(updatefile)
+				end)
+			end
+			checkverhttp = true
+		end)
+	end
+	async_http.dispatch()
+end
 while true do
 	pos = ENTITY.GET_ENTITY_COORDS(PLAYER.PLAYER_PED_ID())
 	vehlast = entities.get_user_vehicle_as_handle()
@@ -550,6 +740,10 @@ while true do
 		MOBILE.SET_MOBILE_PHONE_ROTATION(phrotx, phroty, phrotz)
 	end
 	
+	if not checkverhttp then
+		checkver()
+	end
 	
 	util.yield()
 end
+
