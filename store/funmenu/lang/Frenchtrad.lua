@@ -97,6 +97,7 @@ ANTI_CARJACKING = "Anti carjacking"
 --------------weapon menu-------------------
 WEAP_MENU = "Arme"
 NO_SPREAD = "meilleur precision"
+NO_RECOIL = "Pas de recul"
 IMPACT_SCALE = "Taille de l'effet d'impact"
 SHOOT_PED = "Tirer des PNJ"
 DRIVE_IT = "Arme pour conduire les vehicule"
@@ -260,9 +261,9 @@ GTA_MONITOR_FAIL = "GTA script moniteur"
 GTA_MONITOR = "Moniteur des Script GTA"
 --------------gta script monitor end--------------
 SEE_CHANGE = "Voir le changelog"
-CHANGE_LOG = [[-Amelioration de l'auto update
--Tentative de me rendre moins stupide
--Ajout de traduction manquante]]
+CHANGE_LOG = [[-Amélioration de la surveillance des scripts GTA
+-Amélioré sans propagation
+-Ajout d'aucun recul]]
 UPDATE_LUA = "Mettre a jour le lua"
 NEW_VER_AVAILABLE = "Une nouvelle version est disponible pour mettre à jour le lua allez dans : Stand > Lua Script > "..SETTING_MENU.." > "..UPDATE_LUA
 FINISHED_UPDATE = "Mise à jour terminée, veuillez redémarrer le Lua pour avoir la version mise à jour"

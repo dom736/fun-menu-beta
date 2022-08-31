@@ -97,6 +97,7 @@ ANTI_CARJACKING = "Anti-carjacking"
 --------------weapon menu-------------------
 WEAP_MENU = "Weapon"
 NO_SPREAD = "No spread"
+NO_RECOIL = "No recoil"
 IMPACT_SCALE = "Impact FX scale"
 SHOOT_PED = "Shoot ped"
 DRIVE_IT = "Drive it gun"
@@ -260,9 +261,9 @@ GTA_MONITOR_FAIL = "GTA script monitor"
 GTA_MONITOR = "Monitor GTA Script"
 --------------gta script monitor end--------------
 SEE_CHANGE = "See changelog"
-CHANGE_LOG = [[-Improved auto updater
--tried to fix my stupidity
--added missing translation]]
+CHANGE_LOG = [[-Improved GTA script monitoring
+-Improved no spread
+-Added no recoil]]
 UPDATE_LUA = "Update the lua"
 NEW_VER_AVAILABLE = "A new version is available to update the lua go to : Stand > Lua Script > "..SETTING_MENU.." > "..UPDATE_LUA
 FINISHED_UPDATE = "Finished updating please restart the lua to have the updated version"
