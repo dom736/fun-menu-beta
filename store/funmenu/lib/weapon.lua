@@ -3,7 +3,7 @@ nospread = off
 menu.toggle(weapmenu, NO_SPREAD, {}, "", function(on)
     nospread = on
 	while nospread do
-		if not PED._IS_PED_SWAPPING_WEAPON(plyped()) then
+		if not PED._IS_PED_SWAPPING_WEAPON(plyped()) and not util.is_session_transition_active() and not (memory.read_float(memory.read_long(memory.read_long(entities.handle_to_pointer(players.user_ped()) + 0x10D8) + 0x20) + 0x74) == 0) then
 			memory.write_float(memory.read_long(memory.read_long(entities.handle_to_pointer(players.user_ped()) + 0x10D8) + 0x20) + 0x74, 0)
 		end
 		util.yield()
@@ -13,8 +13,20 @@ norecoil = off
 menu.toggle(weapmenu, NO_RECOIL, {}, "", function(on)
     norecoil = on
 	while norecoil do
-		if not PED._IS_PED_SWAPPING_WEAPON(plyped()) then
-			memory.write_float(memory.read_long(memory.read_long(entities.handle_to_pointer(players.user_ped()) + 0x10D8) + 0x20) + 0x2F4, 0)
+		if not PED._IS_PED_SWAPPING_WEAPON(plyped()) and not util.is_session_transition_active() and not (memory.read_float(memory.read_long(memory.read_long(entities.handle_to_pointer(players.user_ped()) + 0x10D8) + 0x20) + 0x84) == 0) then
+			memory.write_float(memory.read_long(memory.read_long(entities.handle_to_pointer(players.user_ped()) + 0x10D8) + 0x20) + 0x84, 0)
+			memory.write_float(memory.read_long(memory.read_long(entities.handle_to_pointer(players.user_ped()) + 0x10D8) + 0x20) + 0x2E4, 0)
+			memory.write_float(memory.read_long(memory.read_long(entities.handle_to_pointer(players.user_ped()) + 0x10D8) + 0x20) + 0x2E8, 0)
+		end
+		
+		util.yield()
+	end
+end)
+menu.toggle(weapmenu, NO_WAIT_SHOT, {}, NO_WAIT_SHOT_DESC, function(on)
+    norecoil = on
+	while norecoil do
+		if not PED._IS_PED_SWAPPING_WEAPON(plyped()) and not util.is_session_transition_active() and not (memory.read_float(memory.read_long(memory.read_long(entities.handle_to_pointer(players.user_ped()) + 0x10D8) + 0x20) + 0x13C) == 0) then
+			memory.write_float(memory.read_long(memory.read_long(entities.handle_to_pointer(players.user_ped()) + 0x10D8) + 0x20) + 0x13C, 0)
 		end
 		util.yield()
 	end
