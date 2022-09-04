@@ -263,10 +263,10 @@ GTA_MONITOR_FAIL = "GTA script moniteur"
 GTA_MONITOR = "Moniteur des Script GTA"
 --------------gta script monitor end--------------
 SEE_CHANGE = "Voir le changelog"
-CHANGE_LOG = [[-Amélioration de la surveillance des scripts GTA
--Amélioré sans propagation
--Ajout d'aucun recul]]
+PAST_CHANGE = "Ancien changelog"
+CHANGE_LOG = [[-Ajout d'une option pour mettre à jour automatiquement le lua]]
 UPDATE_LUA = "Mettre a jour le lua"
+AUTO_UPDATE = "Mettre le lua automatiquement a jour"
 NEW_VER_AVAILABLE = "Une nouvelle version est disponible pour mettre à jour le lua allez dans : Stand > Lua Script > "..SETTING_MENU.." > "..UPDATE_LUA
 FINISHED_UPDATE = "Mise à jour terminée, veuillez redémarrer le Lua pour avoir la version mise à jour"
 RATE_LIMIT = "Impossible de télécharger la dernière version vous avez depasser le nombre de requete"

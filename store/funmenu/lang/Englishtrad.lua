@@ -263,11 +263,12 @@ GTA_MONITOR_FAIL = "GTA script monitor"
 GTA_MONITOR = "Monitor GTA Script"
 --------------gta script monitor end--------------
 SEE_CHANGE = "See changelog"
-CHANGE_LOG = [[-Improved GTA script monitoring
--Improved no spread
--Added no recoil]]
+PAST_CHANGE = "Past change"
+CHANGE_LOG = [[-Added option to auto update the lua]]
 UPDATE_LUA = "Update the lua"
+AUTO_UPDATE = "Auto update the lua"
 NEW_VER_AVAILABLE = "A new version is available to update the lua go to : Stand > Lua Script > "..SETTING_MENU.." > "..UPDATE_LUA
+STARTING_AUTO_UPDATE = "Update found starting the updater"
 FINISHED_UPDATE = "Finished updating please restart the lua to have the updated version"
 RATE_LIMIT = "Can't download the latest version you are being rate limited"
 STATUS_RATE_LIMIT = "Checking ratelimit"
