@@ -3,7 +3,7 @@ nospread = off
 menu.toggle(weapmenu, NO_SPREAD, {}, "", function(on)
     nospread = on
 	while nospread do
-		if not PED._IS_PED_SWAPPING_WEAPON(plyped()) and not util.is_session_transition_active() and not (memory.read_float(memory.read_long(memory.read_long(entities.handle_to_pointer(players.user_ped()) + 0x10D8) + 0x20) + 0x74) == 0) then
+		if not PED.IS_PED_SWITCHING_WEAPON(plyped()) and not util.is_session_transition_active() and not (memory.read_float(memory.read_long(memory.read_long(entities.handle_to_pointer(players.user_ped()) + 0x10D8) + 0x20) + 0x74) == 0) then
 			memory.write_float(memory.read_long(memory.read_long(entities.handle_to_pointer(players.user_ped()) + 0x10D8) + 0x20) + 0x74, 0)
 		end
 		util.yield()
@@ -13,7 +13,7 @@ norecoil = off
 menu.toggle(weapmenu, NO_RECOIL, {}, "", function(on)
     norecoil = on
 	while norecoil do
-		if not PED._IS_PED_SWAPPING_WEAPON(plyped()) and not util.is_session_transition_active() and not (memory.read_float(memory.read_long(memory.read_long(entities.handle_to_pointer(players.user_ped()) + 0x10D8) + 0x20) + 0x84) == 0) then
+		if not PED.IS_PED_SWITCHING_WEAPON(plyped()) and not util.is_session_transition_active() and not (memory.read_float(memory.read_long(memory.read_long(entities.handle_to_pointer(players.user_ped()) + 0x10D8) + 0x20) + 0x84) == 0) then
 			memory.write_float(memory.read_long(memory.read_long(entities.handle_to_pointer(players.user_ped()) + 0x10D8) + 0x20) + 0x84, 0)
 			memory.write_float(memory.read_long(memory.read_long(entities.handle_to_pointer(players.user_ped()) + 0x10D8) + 0x20) + 0x2E4, 0)
 			memory.write_float(memory.read_long(memory.read_long(entities.handle_to_pointer(players.user_ped()) + 0x10D8) + 0x20) + 0x2E8, 0)
@@ -25,7 +25,7 @@ end)
 menu.toggle(weapmenu, NO_WAIT_SHOT, {}, NO_WAIT_SHOT_DESC, function(on)
     norecoil = on
 	while norecoil do
-		if not PED._IS_PED_SWAPPING_WEAPON(plyped()) and not util.is_session_transition_active() and not (memory.read_float(memory.read_long(memory.read_long(entities.handle_to_pointer(players.user_ped()) + 0x10D8) + 0x20) + 0x13C) == 0) then
+		if not PED.IS_PED_SWITCHING_WEAPON(plyped()) and not util.is_session_transition_active() and not (memory.read_float(memory.read_long(memory.read_long(entities.handle_to_pointer(players.user_ped()) + 0x10D8) + 0x20) + 0x13C) == 0) then
 			memory.write_float(memory.read_long(memory.read_long(entities.handle_to_pointer(players.user_ped()) + 0x10D8) + 0x20) + 0x13C, 0)
 		end
 		util.yield()
@@ -76,8 +76,8 @@ menu.toggle(weapmenu, WEAPON_ON_BACK, {}, "", function(on)
 	if weaponback then
 		spawnweapon = 0
 	end
-	curweap = HUD._HUD_WEAPON_WHEEL_GET_SELECTED_HASH(plyped())
-	if not (HUD._HUD_WEAPON_WHEEL_GET_SELECTED_HASH(plyped()) == -1569615261) and weaponback then
+	curweap = HUD.HUD_GET_WEAPON_WHEEL_CURRENTLY_HIGHLIGHTED(plyped())
+	if not (HUD.HUD_GET_WEAPON_WHEEL_CURRENTLY_HIGHLIGHTED(plyped()) == -1569615261) and weaponback then
 		spawnweapon = WEAPON.CREATE_WEAPON_OBJECT(curweap, 1, pos.x, pos.y, pos.z, true, 1, 0)
 		attachweapon(spawnweapon)
 	end
@@ -89,11 +89,11 @@ menu.toggle(weapmenu, WEAPON_ON_BACK, {}, "", function(on)
 		else
 			ENTITY.SET_ENTITY_VISIBLE(spawnweapon, false, false)
 		end
-		if not (HUD._HUD_WEAPON_WHEEL_GET_SELECTED_HASH(plyped()) == curweap) and not (HUD._HUD_WEAPON_WHEEL_GET_SELECTED_HASH(plyped()) == -1569615261) then
+		if not (HUD.HUD_GET_WEAPON_WHEEL_CURRENTLY_HIGHLIGHTED(plyped()) == curweap) and not (HUD.HUD_GET_WEAPON_WHEEL_CURRENTLY_HIGHLIGHTED(plyped()) == -1569615261) then
 			if not (spawnweapon == 0) then
 				entities.delete_by_handle(spawnweapon)
 			end
-			curweap = HUD._HUD_WEAPON_WHEEL_GET_SELECTED_HASH(plyped())
+			curweap = HUD.HUD_GET_WEAPON_WHEEL_CURRENTLY_HIGHLIGHTED(plyped())
 			requestweapon(curweap)
 			spawnweapon = WEAPON.CREATE_WEAPON_OBJECT(curweap, 1, pos.x, pos.y, pos.z, true, 1, 0)
 			if (WEAPON.GET_CURRENT_PED_WEAPON_ENTITY_INDEX(plyped()) == 0) then

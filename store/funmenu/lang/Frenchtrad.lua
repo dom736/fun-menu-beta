@@ -264,7 +264,9 @@ GTA_MONITOR = "Moniteur des Script GTA"
 --------------gta script monitor end--------------
 SEE_CHANGE = "Voir le changelog"
 PAST_CHANGE = "Ancien changelog"
-CHANGE_LOG = [[-Ajout d'une option pour mettre à jour automatiquement le lua]]
+CHANGE_LOG = [[-Amélioration du code
+-Suppresion de code inutiliser et d'option qui ne marcher plus
+-Ajout de commande pour tout les option pour les joueurs]]
 UPDATE_LUA = "Mettre a jour le lua"
 AUTO_UPDATE = "Mettre le lua automatiquement a jour"
 NEW_VER_AVAILABLE = "Une nouvelle version est disponible pour mettre à jour le lua allez dans : Stand > Lua Script > "..SETTING_MENU.." > "..UPDATE_LUA

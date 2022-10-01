@@ -1021,12 +1021,12 @@ util.create_tick_handler(function()
 				SCRIPT.SCRIPT_THREAD_ITERATOR_RESET()
 				scriptiterator = SCRIPT.SCRIPT_THREAD_ITERATOR_GET_NEXT_THREAD_ID()
 				while not (scriptiterator == 0) do
-					if (SCRIPT._GET_NAME_OF_THREAD(scriptiterator) == gtascript) then
+					if (SCRIPT.GET_NAME_OF_SCRIPT_WITH_THIS_ID(scriptiterator) == gtascript) then
 						dividerthread = "Thread ID : "..scriptiterator
 					end
-					if (SCRIPT._GET_NAME_OF_THREAD(scriptiterator) == gtascript) then
-						if not (NETWORK.NETWORK_GET_HOST_OF_SCRIPT(SCRIPT._GET_NAME_OF_THREAD(scriptiterator), -1, 0) == -1) then
-							dividerhost = "Host : "..players.get_name(NETWORK.NETWORK_GET_HOST_OF_SCRIPT(SCRIPT._GET_NAME_OF_THREAD(scriptiterator), -1, 0))
+					if (SCRIPT.GET_NAME_OF_SCRIPT_WITH_THIS_ID(scriptiterator) == gtascript) then
+						if not (NETWORK.NETWORK_GET_HOST_OF_SCRIPT(SCRIPT.GET_NAME_OF_SCRIPT_WITH_THIS_ID(scriptiterator), -1, 0) == -1) then
+							dividerhost = "Host : "..players.get_name(NETWORK.NETWORK_GET_HOST_OF_SCRIPT(SCRIPT.GET_NAME_OF_SCRIPT_WITH_THIS_ID(scriptiterator), -1, 0))
 						else
 							dividerhost = "No host"
 						end
