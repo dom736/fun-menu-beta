@@ -96,9 +96,6 @@ ANTI_CARJACKING = "Anti-carjacking"
 --------------vehicle menu end--------------
 --------------weapon menu-------------------
 WEAP_MENU = "Weapon"
-NO_SPREAD = "No spread"
-NO_RECOIL = "No recoil"
-NO_WAIT_SHOT = "Reduce time between shot"
 NO_WAIT_SHOT_DESC = "Some short of rapid fire work great with the Heavy Revolver MK II"
 IMPACT_SCALE = "Impact FX scale"
 SHOOT_PED = "Shoot ped"
@@ -264,12 +261,10 @@ GTA_MONITOR = "Monitor GTA Script"
 --------------gta script monitor end--------------
 SEE_CHANGE = "See changelog"
 PAST_CHANGE = "Past change"
-CHANGE_LOG = [[-Improved the code
--Removed unused ccode and broken option
--Added command for all player option]]
+CHANGE_LOG = [[-removed and fixed some option in weapon]]
 UPDATE_LUA = "Update the lua"
 AUTO_UPDATE = "Auto update the lua"
-NEW_VER_AVAILABLE = "A new version is available to update the lua go to : Stand > Lua Script > "..SETTING_MENU.." > "..UPDATE_LUA
+NEW_VER_AVAILABLE = "A new version is available to update the lua go to : Stand > Lua Script > "..SCRIPT_FILENAME.." > "..SETTING_MENU.." > "..UPDATE_LUA
 STARTING_AUTO_UPDATE = "Update found starting the updater"
 FINISHED_UPDATE = "Finished updating please restart the lua to have the updated version"
 RATE_LIMIT = "Can't download the latest version you are being rate limited"

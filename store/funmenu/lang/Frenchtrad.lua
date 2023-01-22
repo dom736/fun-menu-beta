@@ -96,9 +96,6 @@ ANTI_CARJACKING = "Anti carjacking"
 --------------vehicle menu end--------------
 --------------weapon menu-------------------
 WEAP_MENU = "Arme"
-NO_SPREAD = "meilleur precision"
-NO_RECOIL = "Pas de recul"
-NO_WAIT_SHOT = "Réduire le temps entre les tirs"
 NO_WAIT_SHOT_DESC = "Une sorte tir rapide fonctionnent très bien avec le Revolver lourd MK II"
 IMPACT_SCALE = "Taille de l'effet d'impact"
 SHOOT_PED = "Tirer des PNJ"
@@ -264,12 +261,10 @@ GTA_MONITOR = "Moniteur des Script GTA"
 --------------gta script monitor end--------------
 SEE_CHANGE = "Voir le changelog"
 PAST_CHANGE = "Ancien changelog"
-CHANGE_LOG = [[-Amélioration du code
--Suppresion de code inutiliser et d'option qui ne marcher plus
--Ajout de commande pour tout les option pour les joueurs]]
+CHANGE_LOG = [[-option suprimer et réparer dans Arme]]
 UPDATE_LUA = "Mettre a jour le lua"
 AUTO_UPDATE = "Mettre le lua automatiquement a jour"
-NEW_VER_AVAILABLE = "Une nouvelle version est disponible pour mettre à jour le lua allez dans : Stand > Lua Script > "..SETTING_MENU.." > "..UPDATE_LUA
+NEW_VER_AVAILABLE = "Une nouvelle version est disponible pour mettre à jour le lua allez dans : Stand > Lua Script > "..SCRIPT_FILENAME.." > "..SETTING_MENU.." > "..UPDATE_LUA
 FINISHED_UPDATE = "Mise à jour terminée, veuillez redémarrer le Lua pour avoir la version mise à jour"
 RATE_LIMIT = "Impossible de télécharger la dernière version vous avez depasser le nombre de requete"
 STATUS_RATE_LIMIT = "Vérification de la limite de requete"
