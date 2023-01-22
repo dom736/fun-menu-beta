@@ -173,13 +173,13 @@ function driveitgun ()
 	memory.free(entitodrive)
 end
 function deletegun ()
-	entitytmodel = memory.alloc_int()
-	if PLAYER.GET_ENTITY_PLAYER_IS_FREE_AIMING_AT(PLAYER.PLAYER_ID(), entitytmodel) then
+	entitodelete = memory.alloc_int()
+	if PLAYER.GET_ENTITY_PLAYER_IS_FREE_AIMING_AT(PLAYER.PLAYER_ID(), entitodelete) then
 		if PAD.IS_CONTROL_PRESSED(1, 178) then
-			entities.delete_by_handle(memory.read_int(entitytmodel))
+			entities.delete_by_handle(memory.read_int(entitodelete))
 		end
 	end
-	memory.free(entitytmodel)
+	memory.free(entitodrive)
 end
 function spawnplaneforattack(posforplane, playerplane, zspawnplus, headingspawn)
 	planehash = util.joaat("Lazer")
@@ -396,7 +396,7 @@ util.show_corner_help(WELCOM_MESS.. loadingtimeend-loadtimestart ..WELCOM_MESS_2
 
 checkverhttp = false
 function checkver()
-	scriptversion = 0110
+	scriptversion = 0109
 	async_http.init("api.github.com", "/rate_limit", function(output)
 		ratelimit = string.gsub(string.gsub(string.match(output, '"remaining":%d.'), '"remaining":', ""), ",", "")
 		finishedhttp = true
