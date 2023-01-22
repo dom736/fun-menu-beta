@@ -396,7 +396,7 @@ util.show_corner_help(WELCOM_MESS.. loadingtimeend-loadtimestart ..WELCOM_MESS_2
 
 checkverhttp = false
 function checkver()
-	scriptversion = 0108
+	scriptversion = 0109
 	async_http.init("api.github.com", "/rate_limit", function(output)
 		ratelimit = string.gsub(string.gsub(string.match(output, '"remaining":%d.'), '"remaining":', ""), ",", "")
 		finishedhttp = true
@@ -542,6 +542,7 @@ function checkver()
 									else
 										writemode = "w+"
 									end
+
 									file = io.open(filesystem.scripts_dir()..filepath[i], writemode)
 									file:write(output)
 									file:close()
@@ -551,15 +552,15 @@ function checkver()
 								while not finishedhttp do
 									util.yield()
 								end
-						util.yield(500)
-					end
+								util.yield(500)
+							end
 					else
 						util.toast(RATE_LIMIT)
-						updating = false
+						isupdating = false
 						succes = false
 						util.yield(100)
 					end
-					updating = false
+					isupdating = false
 					succes = true
 					os.remove(updatefile2)
 					os.remove(updatefile)
