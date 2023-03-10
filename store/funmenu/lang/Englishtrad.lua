@@ -263,7 +263,7 @@ GTA_MONITOR = "Monitor GTA Script"
 --------------gta script monitor end--------------
 SEE_CHANGE = "See changelog"
 PAST_CHANGE = "Past change"
-CHANGE_LOG = [[-removed and fixed some option in weapon]]
+CHANGE_LOG = [[-Added the ability to use blinker]]
 UPDATE_LUA = "Update the lua"
 AUTO_UPDATE = "Auto update the lua"
 NEW_VER_AVAILABLE = "A new version is available to update the lua go to : Stand > Lua Script > "..SCRIPT_FILENAME.." > "..SETTING_MENU.." > "..UPDATE_LUA
