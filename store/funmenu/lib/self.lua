@@ -113,3 +113,11 @@ end)
 specialability = menu.toggle_loop(selfmenu, INF_SPECIAL, {}, "", function()
 	PLAYER.SPECIAL_ABILITY_FILL_METER(PLAYER.PLAYER_ID(), true)
 end)
+util.create_tick_handler(function()
+	if not NETWORK.NETWORK_IS_SESSION_STARTED() and successself then 
+		menu.set_visible(specialability, true)
+	end
+	if NETWORK.NETWORK_IS_SESSION_STARTED() and successself then 
+		menu.set_visible(specialability, false)
+	end
+end)

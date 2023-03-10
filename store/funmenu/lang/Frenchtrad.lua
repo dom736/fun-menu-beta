@@ -93,6 +93,8 @@ STICK_TO_GROUND = "Coller la voiture aux sol"
 EASY_ENTER = "Arrêtez le véhicule dans lequel vous essayez de monter"
 DRIVE_ON_WALL = "Conduire sur les murs"
 ANTI_CARJACKING = "Anti carjacking"
+BLINKER_RIGHT = "Clignotant droit"
+BLINKER_LEFT = "Clignotant gauche"
 --------------vehicle menu end--------------
 --------------weapon menu-------------------
 WEAP_MENU = "Arme"
@@ -105,7 +107,6 @@ DEL_GUN = "Arme pour detruire les vehicule"
 DEL_GUN_DESC = "Appuyer sur suppr(delete) pour supprimer la voiture que vous viser"
 INV_WEAP = "Arme invisible"
 WEAPON_ON_BACK = "Ranger l'arme sur le dos"
-
 --------------weapon menu end---------------
 --------------audio menu--------------------
 AUDIO_MENU = "Audio"
@@ -261,7 +262,7 @@ GTA_MONITOR = "Moniteur des Script GTA"
 --------------gta script monitor end--------------
 SEE_CHANGE = "Voir le changelog"
 PAST_CHANGE = "Ancien changelog"
-CHANGE_LOG = [[-option suprimer et réparer dans Arme]]
+CHANGE_LOG = [[-Ajout d'une option pour utiliser les clignotant]]
 UPDATE_LUA = "Mettre a jour le lua"
 AUTO_UPDATE = "Mettre le lua automatiquement a jour"
 NEW_VER_AVAILABLE = "Une nouvelle version est disponible pour mettre à jour le lua allez dans : Stand > Lua Script > "..SCRIPT_FILENAME.." > "..SETTING_MENU.." > "..UPDATE_LUA

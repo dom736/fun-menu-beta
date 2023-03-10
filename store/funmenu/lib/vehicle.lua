@@ -318,3 +318,18 @@ menu.toggle_loop(vehmenu, ANTI_CARJACKING, {}, "", function()
 		end
 	end
 end)
+blinker={}
+blinker.rightcmdref = menu.toggle(vehmenu, BLINKER_RIGHT, {}, "", function(on)
+	if blinker.leftcmdref and on then
+		menu.set_value(blinker.leftcmdref, false)
+	end
+	blinker.right = on
+	VEHICLE.SET_VEHICLE_INDICATOR_LIGHTS(veh, 0, on)
+end)
+blinker.leftcmdref = menu.toggle(vehmenu, BLINKER_LEFT, {}, "", function(on)
+	if blinker.rightcmdref and on then
+		menu.set_value(blinker.rightcmdref, false)
+	end
+	blinker.left = on
+	VEHICLE.SET_VEHICLE_INDICATOR_LIGHTS(veh, 1, on)
+end)

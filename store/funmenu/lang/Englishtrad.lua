@@ -93,6 +93,8 @@ STICK_TO_GROUND = "Stick to the ground"
 EASY_ENTER = "Stop the vehicle you are trying to get in"
 DRIVE_ON_WALL = "Drive on walls"
 ANTI_CARJACKING = "Anti-carjacking"
+BLINKER_RIGHT = "Blinker right"
+BLINKER_LEFT = "Blinker left"
 --------------vehicle menu end--------------
 --------------weapon menu-------------------
 WEAP_MENU = "Weapon"
