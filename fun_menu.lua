@@ -581,13 +581,6 @@ while true do
 	if not NETWORK.NETWORK_IS_SESSION_STARTED() and successself then 
 		menu.set_visible(specialability, true)
 	end
-	if NETWORK.NETWORK_IS_SESSION_STARTED() and successself then 
-		menu.set_visible(specialability, false)
-	end
-	if successmisc then
-		MOBILE.SET_MOBILE_PHONE_ROTATION(phrotx, phroty, phrotz)
-	end
-	
 	if not checkverhttp then
 		checkver()
 	end
