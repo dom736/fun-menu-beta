@@ -396,7 +396,7 @@ util.show_corner_help(WELCOM_MESS.. loadingtimeend-loadtimestart ..WELCOM_MESS_2
 
 checkverhttp = false
 function checkver()
-	scriptversion = 0111
+	scriptversion = 0112
 	async_http.init("api.github.com", "/rate_limit", function(output)
 		ratelimit = string.gsub(string.gsub(string.match(output, '"remaining":%d.'), '"remaining":', ""), ",", "")
 		finishedhttp = true
