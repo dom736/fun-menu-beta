@@ -95,6 +95,9 @@ DRIVE_ON_WALL = "Conduire sur les murs"
 ANTI_CARJACKING = "Anti carjacking"
 BLINKER_RIGHT = "Clignotant droit"
 BLINKER_LEFT = "Clignotant gauche"
+VEH_BLINKER_MENU = "Clignotant"
+BLINKER_WARNING = "Clignotant warning"
+BLINKER_DESC = "Mettait une hotkey pour les utiliser facilment"
 --------------vehicle menu end--------------
 --------------weapon menu-------------------
 WEAP_MENU = "Arme"
@@ -262,7 +265,7 @@ GTA_MONITOR = "Moniteur des Script GTA"
 --------------gta script monitor end--------------
 SEE_CHANGE = "Voir le changelog"
 PAST_CHANGE = "Ancien changelog"
-CHANGE_LOG = [[-Ajout d'une option pour utiliser les clignotant]]
+CHANGE_LOG = [[-Ajout des warning aux cignotant]]
 UPDATE_LUA = "Mettre a jour le lua"
 AUTO_UPDATE = "Mettre le lua automatiquement a jour"
 NEW_VER_AVAILABLE = "Une nouvelle version est disponible pour mettre à jour le lua allez dans : Stand > Lua Script > "..SCRIPT_FILENAME.." > "..SETTING_MENU.." > "..UPDATE_LUA

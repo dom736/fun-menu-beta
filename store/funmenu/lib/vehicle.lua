@@ -3,6 +3,7 @@ vehflymenu = menu.list(vehmenu, VEH_FLY_SUBMENU, {}, "")
 vehspeedmettermenu = menu.list(vehmenu, SPEED_METTER, {}, "")
 vehspeedmettersettingmenu = menu.list(vehspeedmettermenu, SPEED_METTER_SETTING, {}, "")
 vehspeedmettertexturemenu = menu.list(vehspeedmettermenu, SPEED_METTER_TEXTURE, {}, "")
+vehblinker = menu.list(vehmenu, VEH_BLINKER_MENU, {}, "")
 successiadrive = pcall(require, iadrive)
 if not successiadrive then
 	util.toast(FAIL_LOAD1.."ia drive"..FAIL_LOAD2)
@@ -319,17 +320,31 @@ menu.toggle_loop(vehmenu, ANTI_CARJACKING, {}, "", function()
 	end
 end)
 blinker={}
-blinker.rightcmdref = menu.toggle(vehmenu, BLINKER_RIGHT, {}, "", function(on)
-	if blinker.leftcmdref and on then
+blinker.rightcmdref = menu.toggle(vehblinker, BLINKER_RIGHT, {}, BLINKER_DESC, function(on)
+	if (blinker.left or blinker.warning) and on then
 		menu.set_value(blinker.leftcmdref, false)
+		menu.set_value(blinker.warningcmdref, false)
+		util.yield(100)
 	end
 	blinker.right = on
 	VEHICLE.SET_VEHICLE_INDICATOR_LIGHTS(veh, 0, on)
 end)
-blinker.leftcmdref = menu.toggle(vehmenu, BLINKER_LEFT, {}, "", function(on)
-	if blinker.rightcmdref and on then
+blinker.leftcmdref = menu.toggle(vehblinker, BLINKER_LEFT, {}, BLINKER_DESC, function(on)
+	if (blinker.right or blinker.warning) and on then
 		menu.set_value(blinker.rightcmdref, false)
+		menu.set_value(blinker.warningcmdref, false)
+		util.yield(100)
 	end
 	blinker.left = on
 	VEHICLE.SET_VEHICLE_INDICATOR_LIGHTS(veh, 1, on)
+end)
+blinker.warningcmdref = menu.toggle(vehblinker, BLINKER_WARNING, {}, BLINKER_DESC, function(on)
+	if (blinker.rightcmdref or blinker.leftcmdref) and on then
+		menu.set_value(blinker.rightcmdref, false)
+		menu.set_value(blinker.leftcmdref, false)
+		util.yield(100)
+	end
+	blinker.warning = on
+	VEHICLE.SET_VEHICLE_INDICATOR_LIGHTS(veh, 1, on)
+	VEHICLE.SET_VEHICLE_INDICATOR_LIGHTS(veh, 0, on)
 end)

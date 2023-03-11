@@ -95,6 +95,9 @@ DRIVE_ON_WALL = "Drive on walls"
 ANTI_CARJACKING = "Anti-carjacking"
 BLINKER_RIGHT = "Blinker right"
 BLINKER_LEFT = "Blinker left"
+VEH_BLINKER_MENU = "Blinker"
+BLINKER_WARNING = "Warning blinker"
+BLINKER_DESC = "Attatch a hotkey to use them easily"
 --------------vehicle menu end--------------
 --------------weapon menu-------------------
 WEAP_MENU = "Weapon"
@@ -263,7 +266,7 @@ GTA_MONITOR = "Monitor GTA Script"
 --------------gta script monitor end--------------
 SEE_CHANGE = "See changelog"
 PAST_CHANGE = "Past change"
-CHANGE_LOG = [[-Added the ability to use blinker]]
+CHANGE_LOG = [[-Added warning to blinker]]
 UPDATE_LUA = "Update the lua"
 AUTO_UPDATE = "Auto update the lua"
 NEW_VER_AVAILABLE = "A new version is available to update the lua go to : Stand > Lua Script > "..SCRIPT_FILENAME.." > "..SETTING_MENU.." > "..UPDATE_LUA
