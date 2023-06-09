@@ -265,7 +265,8 @@ GTA_MONITOR = "Moniteur des Script GTA"
 --------------gta script monitor end--------------
 SEE_CHANGE = "Voir le changelog"
 PAST_CHANGE = "Ancien changelog"
-CHANGE_LOG = [[-Ajout des warning aux cignotant]]
+CHANGE_LOG = [[-mis à jour du code
+-Amélioration massive de la stabilité du gestionnaire d'entités, il ne devrait plus y avoir de plantage]]
 UPDATE_LUA = "Mettre a jour le lua"
 AUTO_UPDATE = "Mettre le lua automatiquement a jour"
 NEW_VER_AVAILABLE = "Une nouvelle version est disponible pour mettre à jour le lua allez dans : Stand > Lua Script > "..SCRIPT_FILENAME.." > "..SETTING_MENU.." > "..UPDATE_LUA

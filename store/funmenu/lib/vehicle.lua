@@ -175,17 +175,12 @@ menu.toggle_loop(vehmenu, AUTO_REPAIR, {}, "", function()
 		util.yield(100)
 	end
 end)
-hornboost = off
 menu.toggle(vehmenu, HORN_BOOST, {}, "", function(on)
-    hornboost = on
-	while hornboost do
-		if PAD.IS_CONTROL_PRESSED(86, 86) then
-            pos = ENTITY.GET_ENTITY_SPEED(veh)
-            hfclc = hornforce/100
-            hornforcef = hfclc+1
-			VEHICLE.SET_VEHICLE_FORWARD_SPEED(veh, pos*hornforcef)
-		end
-		util.yield()
+	if PAD.IS_CONTROL_PRESSED(86, 86) then
+        pos = ENTITY.GET_ENTITY_SPEED(veh)
+        hfclc = hornforce/100
+        hornforcef = hfclc+1
+		VEHICLE.SET_VEHICLE_FORWARD_SPEED(veh, pos*hornforcef)
 	end
 end)
 hornforce = 1
@@ -202,22 +197,14 @@ menu.toggle_loop(vehmenu, SUPER_DRIVE, {""}, "", function()
 		ENTITY.FREEZE_ENTITY_POSITION(veh, false)
     end
 end)
-inviciblecarlight = off
-menu.toggle(vehmenu, INVINC_CAR_LIGHT, {}, INVINC_CAR_LIGHT_DESC, function(on)
-    inviciblecarlight = on
-	while inviciblecarlight do
-		VEHICLE.SET_VEHICLE_HAS_UNBREAKABLE_LIGHTS(veh, true)
-		util.yield()
-	end
+menu.toggle_loop(vehmenu, INVINC_CAR_LIGHT, {}, INVINC_CAR_LIGHT_DESC, function(on)
+	VEHICLE.SET_VEHICLE_HAS_UNBREAKABLE_LIGHTS(veh, true)
+end, function()
 	VEHICLE.SET_VEHICLE_HAS_UNBREAKABLE_LIGHTS(vehlast, false)
 end)
-nopop = off
-menu.toggle(vehmenu, NO_CAR_POP, {}, "", function(on)
-    nopop = on
-	while nopop do
-		AUDIO.ENABLE_VEHICLE_EXHAUST_POPS(veh, false)
-		util.yield()
-	end
+menu.toggle_loop(vehmenu, NO_CAR_POP, {}, "", function(on)
+	AUDIO.ENABLE_VEHICLE_EXHAUST_POPS(veh, false)
+end, function()
 	AUDIO.ENABLE_VEHICLE_EXHAUST_POPS(vehlast, true)
 end)
 menu.action(vehmenu, RAISE_ROOF, {}, "", function()
@@ -240,14 +227,11 @@ menu.toggle_loop(vehmenu, NO_DEPTH_LIMIT, {}, NO_DEPTH_LIMIT_DESC, function()
 		VEHICLE.SET_SUBMARINE_CRUSH_DEPTHS(veh, false , 1000, 1000, 1000)
 	end
 end)
-anchor = off
-menu.toggle(vehmenu, ANCHOR_BOAT, {}, "", function(on)
-    anchor = on
-	while anchor do 
-		VEHICLE.SET_BOAT_ANCHOR(veh, true)
-		VEHICLE.SET_BOAT_REMAINS_ANCHORED_WHILE_PLAYER_IS_DRIVER(veh, true)
-		util.yield()
-	end
+
+menu.toggle_loop(vehmenu, ANCHOR_BOAT, {}, "", function(on)
+	VEHICLE.SET_BOAT_ANCHOR(veh, true)
+	VEHICLE.SET_BOAT_REMAINS_ANCHORED_WHILE_PLAYER_IS_DRIVER(veh, true)
+end, function()
 	VEHICLE.SET_BOAT_ANCHOR(veh, false)
 	VEHICLE.SET_BOAT_REMAINS_ANCHORED_WHILE_PLAYER_IS_DRIVER(veh, false)
 end)
@@ -273,34 +257,22 @@ menu.slider(vehmenu, FORKLIFT_HEIGTH, {""}, FORKLIFT_HEIGTH_DESC, 0, 10, 0, 1, f
 menu.action(vehmenu, EJECT_WINDSHIELD, {}, "", function()
 	VEHICLE.POP_OUT_VEHICLE_WINDSCREEN(veh)
 end)
-invincpart = off
-menu.toggle(vehmenu, UNBREAKABLE_PART, {}, "", function(on)
-    invincpart = on
-	while invincpart do
-		VEHICLE.SET_VEHICLE_STRONG(veh, true)
-		util.yield()
-	end
+menu.toggle_loop(vehmenu, UNBREAKABLE_PART, {}, "", function(on)
+	VEHICLE.SET_VEHICLE_STRONG(veh, true)
+end, function()
 	VEHICLE.SET_VEHICLE_STRONG(veh, false)
 end)
-menu.toggle(vehmenu, STICK_TO_GROUND, {}, "", function(on)
-	sticktoground = on
-	while sticktoground do
-		if not VEHICLE.IS_VEHICLE_ON_ALL_WHEELS(veh) then
-			VEHICLE.SET_VEHICLE_ON_GROUND_PROPERLY(veh, 50)
-			util.yield(100)
-		end
-		util.yield()
+menu.toggle_loop(vehmenu, STICK_TO_GROUND, {}, "", function(on)
+	if not VEHICLE.IS_VEHICLE_ON_ALL_WHEELS(veh) then
+		VEHICLE.SET_VEHICLE_ON_GROUND_PROPERLY(veh, 50)
+		util.yield(100)
 	end
 end)
-easyenter = off
-menu.toggle(vehmenu, EASY_ENTER, {}, "", function(on)
-	easyenter = on
-	while easyenter do
-		if not (PED.GET_VEHICLE_PED_IS_TRYING_TO_ENTER(plyped()) == 0) then
-			requestControlLoop(PED.GET_VEHICLE_PED_IS_TRYING_TO_ENTER(plyped()))
-			VEHICLE.BRING_VEHICLE_TO_HALT(PED.GET_VEHICLE_PED_IS_TRYING_TO_ENTER(plyped()), 0, 1)
-		end
-		util.yield()
+menu.toggle_loop(vehmenu, EASY_ENTER, {}, "", function(on)
+	local pedvehtarget = PED.GET_VEHICLE_PED_IS_TRYING_TO_ENTER(plyped())
+	if not (pedvehtarget == 0) then
+		requestControlLoop(pedvehtarget)
+		VEHICLE.BRING_VEHICLE_TO_HALT(pedvehtarget, 0, 1)
 	end
 end)
 menu.toggle_loop(vehmenu, DRIVE_ON_WALL, {}, "", function()
@@ -312,6 +284,7 @@ menu.toggle_loop(vehmenu, ANTI_CARJACKING, {}, "", function()
 		for i = -1, 30 do
 			if (VEHICLE.GET_PED_IN_VEHICLE_SEAT(veh, i) == plyped()) then
 				plyseat = i
+				break
 			end
 		end
 		if PED.IS_PED_BEING_JACKED(plyped()) then

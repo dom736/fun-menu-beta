@@ -266,7 +266,8 @@ GTA_MONITOR = "Monitor GTA Script"
 --------------gta script monitor end--------------
 SEE_CHANGE = "See changelog"
 PAST_CHANGE = "Past change"
-CHANGE_LOG = [[-Added warning to blinker]]
+CHANGE_LOG = [[-updated some code
+-Massively improved stability of the entity manager there should be no more crash]]
 UPDATE_LUA = "Update the lua"
 AUTO_UPDATE = "Auto update the lua"
 NEW_VER_AVAILABLE = "A new version is available to update the lua go to : Stand > Lua Script > "..SCRIPT_FILENAME.." > "..SETTING_MENU.." > "..UPDATE_LUA

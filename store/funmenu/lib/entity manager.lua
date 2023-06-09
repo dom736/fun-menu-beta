@@ -1,3 +1,28 @@
+local function does_entity_exist(entity)
+	for _, checkveh in ipairs(vehmanagerpointer) do
+		if entity == checkveh then
+			return true
+		end
+	end
+	for _, checkped in ipairs(pedmanagerpointer) do
+		if entity == checkped then
+			return true
+		end
+	end
+	for _, checkobject in ipairs(objectmanagerpointer) do
+		if entity == checkobject then
+			return true
+		end
+	end
+	return false
+end
+local function get_handle(pointer)
+	if not enthandle[pointer] then
+		enthandle[pointer] = entities.pointer_to_handle(pointer)
+	end
+	return enthandle[pointer]
+end
+
 entitymanagerlist = menu.list(menu.my_root(), ENTITY_MANAGE, {}, "")
 vehmanager = off
 menu.toggle(entitymanagerlist, ACTIVATE_VEH_MANAGER, {"vehmanager"}, "", function(on)
@@ -19,29 +44,37 @@ toggleobjmanager = menu.toggle(entitymanagerlist, ACTIVATE_OBJECT_MANAGER, {"obj
 		objectmanager = on
 	end
 end)
+
+enthandle = {}
 vehmanagerlist = menu.list(entitymanagerlist, VEH_MANAGER, {}, "")
 vehiclelist = {}
-vehhandle = {}
+vehpointer = {}
+vehmodel = {}
 pedmanagerlist = menu.list(entitymanagerlist, PED_MANAGER, {}, "")
 pedlist = {}
-pedhandle = {}
+pedpointer = {}
+pedmodel = {}
 objectmanagerlist = menu.list(entitymanagerlist, OBJECT_MANAGER, {}, "")
 objectlist = {}
-objecthandle = {}
+objectpointer = {}
+objectmodel = {}
+
 util.create_tick_handler(function()
-	vehmanagerhandle = {}
-	if (INTERIOR.GET_INTERIOR_FROM_ENTITY(plyped()) == 0) and vehmanager then
-		vehmanagerhandle = entities.get_all_vehicles_as_handles()
+	vehmanagerpointer = {}
+	if vehmanager then
+		vehmanagerpointer = entities.get_all_vehicles_as_pointers()	
 	end
-	pos = ENTITY.GET_ENTITY_COORDS(PLAYER.PLAYER_PED_ID())
-	for _, vehicule in ipairs(vehmanagerhandle) do
-		if ENTITY.DOES_ENTITY_EXIST(vehicule) and (vehiclelist[vehicule] == nil) and vehmanager and (INTERIOR.GET_INTERIOR_FROM_ENTITY(plyped()) == 0) then
-			vehhandle[vehicule] = vehicule
-			manufacturer = HUD.GET_FILENAME_FOR_AUDIO_CONVERSATION(VEHICLE.GET_MAKE_NAME_FROM_VEHICLE_MODEL(ENTITY.GET_ENTITY_MODEL(vehicule)))
+	for _, vehicule in ipairs(vehmanagerpointer) do	
+		if does_entity_exist(vehicule) and (vehiclelist[vehicule] == nil) and vehmanager then
+			vehpointer[vehicule] = vehicule
+			vehmodel[vehicule] = entities.get_model_hash(vehicule)
+			local posnameveh =  entities.get_position(vehicule)
+			local posnameveh = v3.distance(pos, posnameveh)
+			local manufacturer = HUD.GET_FILENAME_FOR_AUDIO_CONVERSATION(VEHICLE.GET_MAKE_NAME_FROM_VEHICLE_MODEL(vehmodel[vehicule]))
 			if (manufacturer == "NULL") then
 				manufacturer = ""
 			end
-			carname = HUD.GET_FILENAME_FOR_AUDIO_CONVERSATION(util.reverse_joaat(ENTITY.GET_ENTITY_MODEL(vehicule)))
+			local carname = HUD.GET_FILENAME_FOR_AUDIO_CONVERSATION(util.reverse_joaat(vehmodel[vehicule]))
 			if (carname == "NULL") then
 				carname = ""
 			end
@@ -49,56 +82,63 @@ util.create_tick_handler(function()
 			if (manufacturer == "") then
 				espace = ""
 			end
-			posnameveh = ENTITY.GET_ENTITY_COORDS(vehicule)
-			posnameveh = v3.distance(pos, posnameveh)
-			finalvehname = manufacturer..espace..carname.." ["..math.floor(posnameveh).."m]"
+			local finalvehname = manufacturer..espace..carname.." ["..math.floor(posnameveh).."m]"
 			if (finalvehname == "") then 
-				finalvehname = util.reverse_joaat(ENTITY.GET_ENTITY_MODEL(vehicule))
+				finalvehname = util.reverse_joaat(vehmodel[vehicule])
 			end
-			vehlist = menu.list(vehmanagerlist, finalvehname, {}, "")
+			vehlist = menu.list(vehmanagerlist, "1", {}, "")
 			vehiclelist[vehicule] = vehlist
 			menu.action(vehiclelist[vehicule], EXPLO_VEH_MANAG, {""}, "", function()
-				requestControlLoop(vehhandle[vehicule])
-				NETWORK.NETWORK_EXPLODE_VEHICLE(vehhandle[vehicule], true, true, false)
+				get_handle(vehpointer[vehicule])
+				requestControlLoop(get_handle(vehpointer[vehicule]))
+				NETWORK.NETWORK_EXPLODE_VEHICLE(get_handle(vehpointer[vehicule]), true, true, false)
 			end)
 			menu.action(vehiclelist[vehicule], TELEPORT_VEH_MANAG, {""}, "", function()
-				requestControlLoop(vehhandle[vehicule])
-				ENTITY.SET_ENTITY_COORDS_NO_OFFSET(vehhandle[vehicule], pos.x, pos.y, pos.z, false, false, false)
+				requestControlLoop(get_handle(vehpointer[vehicule]))
+				ENTITY.SET_ENTITY_COORDS_NO_OFFSET(get_handle(vehpointer[vehicule]), pos.x, pos.y, pos.z, false, false, false)
 			end)
 			menu.action(vehiclelist[vehicule], TELEPORT_TO_VEH_MANAG, {""}, "", function()
-				requestControlLoop(vehhandle[vehicule])
-				posnameobjectfunc = ENTITY.GET_ENTITY_COORDS(vehhandle[vehicule])
+				requestControlLoop(get_handle(vehpointer[vehicule]))
+				posnameobjectfunc = ENTITY.GET_ENTITY_COORDS(get_handle(vehpointer[vehicule]))
 				ENTITY.SET_ENTITY_COORDS_NO_OFFSET(plyped(), posnameobjectfunc.x, posnameobjectfunc.y, posnameobjectfunc.z+2, false, false, false)
 			end)
 			menu.click_slider(vehiclelist[vehicule], SET_SPEED_VEH_MANAG, {""}, "", -1000, 1000, 100, 100, function(s)
-				requestControlLoop(vehhandle[vehicule])
-				VEHICLE.SET_VEHICLE_FORWARD_SPEED(vehhandle[vehicule], s)
+				requestControlLoop(get_handle(vehpointer[vehicule]))
+				VEHICLE.SET_VEHICLE_FORWARD_SPEED(get_handle(vehpointer[vehicule]), s)
 			end)
 			menu.action(vehiclelist[vehicule], FIX_VEH_MANAG, {""}, "", function()
-				requestControlLoop(vehhandle[vehicule])
-				fixveh(vehhandle[vehicule])
+				requestControlLoop(get_handle(vehpointer[vehicule]))
+				fixveh(get_handle(vehpointer[vehicule]))
 			end)
 			menu.action(vehiclelist[vehicule], DRIVE_VEH_MANAG, {""}, "", function()
-				requestControlLoop(vehhandle[vehicule])
-				if not (VEHICLE.GET_PED_IN_VEHICLE_SEAT(vehhandle[vehicule], -1) == 0) then
-					pedinseat = VEHICLE.GET_PED_IN_VEHICLE_SEAT(vehhandle[vehicule], -1)
+				requestControlLoop(get_handle(vehpointer[vehicule]))
+				if not (VEHICLE.GET_PED_IN_VEHICLE_SEAT(get_handle(vehpointer[vehicule]), -1) == 0) then
+					pedinseat = VEHICLE.GET_PED_IN_VEHICLE_SEAT(get_handle(vehpointer[vehicule]), -1)
 					TASK.CLEAR_PED_TASKS_IMMEDIATELY(pedinseat)
 				end
-				PED.SET_PED_INTO_VEHICLE(plyped(), vehhandle[vehicule], -1)
+				PED.SET_PED_INTO_VEHICLE(plyped(), get_handle(vehpointer[vehicule]), -1)
 			end)
 			menu.action(vehiclelist[vehicule], DELETE_VEH_MANAG, {""}, "", function()
-				requestControlLoop(vehhandle[vehicule])
-				entities.delete_by_handle(vehhandle[vehicule])
+				entities.delete(vehpointer[vehicule])
+				vehiclelist[key] = nil
+				enthandle[vehpointer[key]] = nil
 			end)
 		end
 	end
 	for key, value in pairs(vehiclelist) do
-		if ENTITY.DOES_ENTITY_EXIST(key) and vehmanager and (INTERIOR.GET_INTERIOR_FROM_ENTITY(plyped()) == 0) then
-			manufacturer = HUD.GET_FILENAME_FOR_AUDIO_CONVERSATION(VEHICLE.GET_MAKE_NAME_FROM_VEHICLE_MODEL(ENTITY.GET_ENTITY_MODEL(key)))
+		if not does_entity_exist(key) and not (vehiclelist[key] == nil) then
+			pcall(menu.delete, value)
+			vehiclelist[key] = nil
+			enthandle[vehpointer[key]] = nil
+		end
+	end
+	for key, value in pairs(vehiclelist) do
+		if does_entity_exist(key) and vehmanager then
+			local manufacturer = HUD.GET_FILENAME_FOR_AUDIO_CONVERSATION(VEHICLE.GET_MAKE_NAME_FROM_VEHICLE_MODEL(vehmodel[key]))
 			if (manufacturer == "NULL") then
 				manufacturer = ""
 			end
-			carname = HUD.GET_FILENAME_FOR_AUDIO_CONVERSATION(util.reverse_joaat(ENTITY.GET_ENTITY_MODEL(key)))
+			local carname = HUD.GET_FILENAME_FOR_AUDIO_CONVERSATION(util.reverse_joaat(vehmodel[key]))
 			if (carname == "NULL") then
 				carname = ""
 			end
@@ -106,121 +146,118 @@ util.create_tick_handler(function()
 			if (manufacturer == "") then
 				espace = ""
 			end
-			posnameveh = ENTITY.GET_ENTITY_COORDS(key)
-			posnameveh = v3.distance(pos, posnameveh)
+			local posnameveh =  entities.get_position(key)
+			local posnameveh = v3.distance(pos, posnameveh)
 			finalvehname = manufacturer..espace..carname.." ["..math.floor(posnameveh).."m]"
 			if (manufacturer..espace..carname == "") then 
-				finalvehname = util.reverse_joaat(ENTITY.GET_ENTITY_MODEL(key)).." ["..math.floor(posnameveh).."m]"
+				finalvehname = util.reverse_joaat(vehmodel[key]).." ["..math.floor(posnameveh).."m]"
 			end
 			menu.set_menu_name(value, finalvehname)
 		end
 	end
-	for key, value in pairs(vehiclelist) do
-		if not ENTITY.DOES_ENTITY_EXIST(key) and not (vehiclelist[key] == nil) then
-			pcall(menu.delete, value)
-			vehiclelist[key] = nil
-		end
-	end
-	util.yield()
+	util.yield(500)
 end)
+
 util.create_tick_handler(function()
-	pedmanagerhandle = {}
-	if (INTERIOR.GET_INTERIOR_FROM_ENTITY(plyped()) == 0) and pedmanager then
-		pedmanagerhandle = entities.get_all_peds_as_handles()
+	pedmanagerpointer = {}
+	if pedmanager then
+		pedmanagerpointer = entities.get_all_peds_as_pointers()
 	end
-	pos = ENTITY.GET_ENTITY_COORDS(PLAYER.PLAYER_PED_ID())
-	for _, ped in ipairs(pedmanagerhandle) do
-		if ENTITY.DOES_ENTITY_EXIST(ped) and (pedlist[ped] == nil) and pedmanager and (INTERIOR.GET_INTERIOR_FROM_ENTITY(plyped()) == 0) then
-			pedhandle[ped] = ped
-			pedname = util.reverse_joaat(ENTITY.GET_ENTITY_MODEL(ped))
-			posnameped = ENTITY.GET_ENTITY_COORDS(ped)
-			posnameped = v3.distance(pos, posnameped)
-			finalpedname = pedname.." ["..math.floor(posnameped).."m]"
+	for _, ped in ipairs(pedmanagerpointer) do
+		if does_entity_exist(ped) and (pedlist[ped] == nil) and pedmanager then
+			pedpointer[ped] = ped
+			pedmodel[ped] = entities.get_model_hash(ped)
+			local posnameped = entities.get_position(ped)
+			local posnameped = v3.distance(pos, posnameped)
+			local finalpedname = util.reverse_joaat(pedmodel[ped]).." ["..math.floor(posnameped).."m]"
 			pedlistnumber = menu.list(pedmanagerlist, finalpedname, {}, "")
 			pedlist[ped] = pedlistnumber
 			menu.action(pedlist[ped], EXPLO_VEH_MANAG, {""}, "", function()
-				requestControlLoop(pedhandle[ped])
-				posped = ENTITY.GET_ENTITY_COORDS(ped)
+				requestControlLoop(get_handle(pedpointer[ped]))
+				posped = ENTITY.GET_ENTITY_COORDS(get_handle(pedpointer[ped]))
 				FIRE.ADD_EXPLOSION(posped.x, posped.y, posped.z, 0, 1, true, false, 1, false)
 			end)
 			menu.action(pedlist[ped], TELEPORT_VEH_MANAG, {""}, "", function()
-				requestControlLoop(pedhandle[ped])
-				ENTITY.SET_ENTITY_COORDS_NO_OFFSET(pedhandle[ped], pos.x, pos.y, pos.z, false, false, false)
+				requestControlLoop(get_handle(pedpointer[ped]))
+				ENTITY.SET_ENTITY_COORDS_NO_OFFSET(get_handle(pedpointer[ped]), pos.x, pos.y, pos.z, false, false, false)
 			end)
 			menu.action(pedlist[ped], TELEPORT_TO_VEH_MANAG, {""}, "", function()
-				requestControlLoop(pedhandle[ped])
-				posnameobjectfunc = ENTITY.GET_ENTITY_COORDS(pedhandle[ped])
+				requestControlLoop(get_handle(pedpointer[ped]))
+				posnameobjectfunc = ENTITY.GET_ENTITY_COORDS(get_handle(pedpointer[ped]))
 				ENTITY.SET_ENTITY_COORDS_NO_OFFSET(plyped(), posnameobjectfunc.x, posnameobjectfunc.y, posnameobjectfunc.z+2, false, false, false)
 			end)
 			menu.action(pedlist[ped], CLEAR_TASK_PED_MANAG, {""}, "", function()
-				requestControlLoop(pedhandle[ped])
-				TASK.CLEAR_PED_TASKS_IMMEDIATELY(pedhandle[ped])
+				requestControlLoop(get_handle(pedpointer[ped]))
+				TASK.CLEAR_PED_TASKS_IMMEDIATELY(get_handle(pedpointer[ped]))
 			end)
 			menu.action(pedlist[ped], DELETE_VEH_MANAG, {""}, "", function()
-				requestControlLoop(pedhandle[ped])
-				entities.delete_by_handle(pedhandle[ped])
+				entities.delete(pedpointer[ped])
+				pcall(menu.delete, value)
+				pedlist[key] = nil
+				enthandle[pedpointer[key]] = nil
 			end)
 		end
 	end
 	for key, value in pairs(pedlist) do
-		if ENTITY.DOES_ENTITY_EXIST(key) and pedmanager and (INTERIOR.GET_INTERIOR_FROM_ENTITY(plyped()) == 0) then
-			pedname = util.reverse_joaat(ENTITY.GET_ENTITY_MODEL(key))
-			posnameped = ENTITY.GET_ENTITY_COORDS(key)
-			posnameped = v3.distance(pos, posnameped)
-			finalpedname = pedname.." ["..math.floor(posnameped).."m]"
+		if not does_entity_exist(key) and not (pedlist[key] == nil) then
+			pcall(menu.delete, value)
+			pedlist[key] = nil
+			enthandle[pedpointer[key]] = nil
+		end
+	end
+	for key, value in pairs(pedlist) do
+		if does_entity_exist(key) and pedmanager then
+			local posnameped = entities.get_position(key)
+			local posnameped = v3.distance(pos, posnameped)
+			local finalpedname = util.reverse_joaat(pedmodel[key]).." ["..math.floor(posnameped).."m]"
 			menu.set_menu_name(value, finalpedname)
 		end
 	end
-	for key, value in pairs(pedlist) do
-		if not ENTITY.DOES_ENTITY_EXIST(key) and not (pedlist[key] == nil) then
-			pcall(menu.delete, value)
-			pedlist[key] = nil
-		end
-	end
-	util.yield()
+	util.yield(500)
 end)
 util.create_tick_handler(function()
-	objectmanagerhandle = {}
-	if (INTERIOR.GET_INTERIOR_FROM_ENTITY(plyped()) == 0) and objectmanager then
-		objectmanagerhandle = entities.get_all_objects_as_handles()
+	objectmanagerpointer = {}
+	if objectmanager then
+		objectmanagerpointer = entities.get_all_objects_as_pointers()
 	end
-	pos = ENTITY.GET_ENTITY_COORDS(PLAYER.PLAYER_PED_ID())
-	for _, object in ipairs(objectmanagerhandle) do
-		if ENTITY.DOES_ENTITY_EXIST(object) and (objectlist[object] == nil) and not (util.reverse_joaat(ENTITY.GET_ENTITY_MODEL(object)) == "") and objectmanager and (INTERIOR.GET_INTERIOR_FROM_ENTITY(plyped()) == 0) then
-			objecthandle[object] = object
-			objectname = util.reverse_joaat(ENTITY.GET_ENTITY_MODEL(object))
-			posnameobject1 = ENTITY.GET_ENTITY_COORDS(object)
-			posnameobject1 = v3.distance(pos, posnameobject1)
-			finalobjectname = objectname
+	for _, object in ipairs(objectmanagerpointer) do
+		if does_entity_exist(object) and (objectlist[object] == nil) and not (util.reverse_joaat(entities.get_model_hash(object)) == "") and objectmanager then
+			objectpointer[object] = object
+			objectmodel[object] = entities.get_model_hash(object)
+			local finalobjectname = util.reverse_joaat(objectmodel[object])
 			objectlistnumber = menu.list(objectmanagerlist, finalobjectname, {}, "")
 			objectlist[object] = objectlistnumber
 			menu.action(objectlist[object], EXPLO_VEH_MANAG, {""}, "", function()
-				requestControlLoop(objecthandle[object])
-				posobject = ENTITY.GET_ENTITY_COORDS(object)
+				requestControlLoop(get_handle(objectpointer[object]))
+				posobject = ENTITY.GET_ENTITY_COORDS(get_handle(objectpointer[object]))
 				FIRE.ADD_EXPLOSION(posobject.x, posobject.y, posobject.z, 0, 1, true, false, 1, false)
 			end)
 			menu.action(objectlist[object], TELEPORT_VEH_MANAG, {""}, "", function()
-				requestControlLoop(objecthandle[object])
-				ENTITY.SET_ENTITY_COORDS_NO_OFFSET(objecthandle[object], pos.x, pos.y, pos.z, false, false, false)
+				requestControlLoop(get_handle(objectpointer[object]))
+				ENTITY.SET_ENTITY_COORDS_NO_OFFSET(get_handle(objectpointer[object]), pos.x, pos.y, pos.z, false, false, false)
 			end)
 			menu.action(objectlist[object], TELEPORT_TO_VEH_MANAG, {""}, "", function()
-				requestControlLoop(objecthandle[object])
-				posnameobjectfunc = ENTITY.GET_ENTITY_COORDS(objecthandle[object])
+				requestControlLoop(get_handle(objectpointer[object]))
+				posnameobjectfunc = ENTITY.GET_ENTITY_COORDS(get_handle(objectpointer[object]))
 				ENTITY.SET_ENTITY_COORDS_NO_OFFSET(plyped(), posnameobjectfunc.x, posnameobjectfunc.y, posnameobjectfunc.z+2, false, false, false)
 			end)
 			menu.action(objectlist[object], DELETE_VEH_MANAG, {""}, "", function()
-				requestControlLoop(objecthandle[object])
-				entities.delete_by_handle(objecthandle[object])
+				entities.delete(objectpointer[object])
+				pcall(menu.delete, objectlist[object])
+				objectlist[object] = nil
+				enthandle[objectpointer[object]] = nil
 			end)
 		end
 		util.yield(10)
 	end
+	util.yield(1000)
 end)
 util.create_tick_handler(function()
-for key, value in pairs(objectlist) do
-		if not ENTITY.DOES_ENTITY_EXIST(key) and not (objectlist[key] == nil) then
+	for key, value in pairs(objectlist) do
+		if not does_entity_exist(key) and not (objectlist[key] == nil) then
 			pcall(menu.delete, value)
 			objectlist[key] = nil
 		end
 	end
+	util.yield()
 end)
